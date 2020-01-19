@@ -9,6 +9,7 @@ const buildFullPlaceType = (placeType) => {
     D: 'District',
     F: 'Region',
     T: 'Station',
+    P: 'Region',
   }
 
   return placeTypes[placeType] || 'Unknown';
@@ -44,7 +45,7 @@ export default ({
             results = rawResults
               .filter(result => result.name !== 'No results found')
               .map(result => ({
-                id: `${result.locationId}_${result.name}`,
+                id: result.index,
                 tag: buildFullPlaceType(result.placeType),
                 primaryText: result.name,
                 secondaryText: buildLocation(result.city, result.country),
