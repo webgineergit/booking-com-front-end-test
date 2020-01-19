@@ -1,0 +1,166 @@
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import LocationFinder from './';
+
+const moreThan6Results = [
+  { id: 'abc', primaryText: 'Foo' },
+  { id: 'def', primaryText: 'Bar' },
+  { id: 'ghi', primaryText: 'Foo Bar' },
+  { id: 'jkl', primaryText: 'Bar Foo' },
+  { id: 'mno', primaryText: 'Foo Bar Foo' },
+  { id: 'pqr', primaryText: 'Bar Foo Bar' },
+  { id: 'stu', primaryText: 'Bar Bar Foo' },
+];
+
+describe('LocationFinder', () => {
+  describe('initially', () => {
+    it('renders', () => {
+      const { getByText } = render(<LocationFinder />);
+
+      expect(getByText('Where are you going?')).toBeTruthy();
+    });
+
+    it('is accompanied by the correct label', () => {
+      const { getByLabelText } = render(<LocationFinder />);
+
+      expect(getByLabelText('Pick-up Location')).toBeTruthy();
+    });
+
+    it('has the correct placeholder text', () => {
+      const { getByPlaceholderText } = render(<LocationFinder />);
+
+      expect(getByPlaceholderText('city, airport, station, region and district..')).toBeTruthy();
+    });
+  });
+
+  describe('accessibility', () => {
+    it('describes itself as a textbox', () => {
+      const { getByRole } = render(<LocationFinder />);
+
+      expect(getByRole('textbox')).toBeTruthy();
+    });
+  });
+
+  describe('interactivity', () => {
+    describe('touching the input', () => {
+      it('focuses on the input', () => {
+        const { getByRole } = render(<LocationFinder />);
+        const input = getByRole('textbox');
+
+        input.focus();
+
+        expect(document.activeElement).toBe(input);
+      });
+    });
+
+    describe('single alphanumeric character entered', () => {
+      it('removes placeholder text', () => {
+        const { getByRole } = render(<LocationFinder />);
+        const input = getByRole('textbox');
+
+        fireEvent.change(input, { target: { value: 'f' } });
+
+        expect(input.value).toBe('f');
+      });
+
+      it('shows no search results', () => {
+        let results = [];
+        const responses = { f: moreThan6Results };
+        const handleChange = (value) => {
+          results = responses[value];
+        };
+        const {
+          queryByRole,
+          getByRole,
+        } = render(
+          <LocationFinder onChange={handleChange} results={results} />
+        );
+        const input = getByRole('textbox');
+
+        fireEvent.change(input, { target: { value: 'f' } });
+
+        expect(queryByRole('listbox')).toBeNull();
+      });
+    });
+
+    describe('multiple alphanumeric characters entered', () => {
+      it('removes the placeholder text', () => {
+        const { getByRole } = render(<LocationFinder />);
+        const input = getByRole('textbox');
+
+        fireEvent.change(input, { target: { value: 'fo' } });
+
+        expect(input.value).toBe('fo');
+      });
+
+      describe('has no results for entry', () => {
+        it('displays no results found message', () => {
+          let results = [];
+          const responses = { fo: [] };
+          const handleChange = (value) => {
+            results = responses[value];
+          };
+          const {
+            getByRole,
+            rerender,
+          } = render(
+            <LocationFinder onChange={handleChange} results={[]} />
+          );
+          const input = getByRole('textbox');
+
+          fireEvent.change(input, { target: { value: 'fo' } });
+
+          rerender(<LocationFinder results={results} />);
+
+          expect(getByRole('listbox').children.length).toBe(1);
+          expect(getByRole('listbox').children[0].innerHTML).toBe('No Results found');
+        });
+      });
+
+      describe('has some results for entry', () => {
+        it('displays a maximum of 6 results', () => {
+          let results = [];
+          const responses = { fo: moreThan6Results };
+          const handleChange = (value) => { results = responses[value] };
+          const {
+            getByRole,
+            rerender,
+          } = render(<LocationFinder onChange={handleChange} results={[]} />);
+          const input = getByRole('textbox');
+
+          fireEvent.change(input, { target: { value: 'fo' } });
+
+          rerender(<LocationFinder onChange={handleChange} results={results} />);
+
+          expect(getByRole('listbox').children.length).toBe(6);
+        });
+      });
+
+      describe('change entry back to a single alphanumeric character', () => {
+        it('shows no search results', () => {
+          let results = [];
+          const responses = { fo: moreThan6Results, f: moreThan6Results };
+          const handleChange = (value) => { results = responses[value] };
+          const {
+            getByRole,
+            queryByRole,
+            rerender,
+          } = render(<LocationFinder onChange={handleChange} results={[]} />);
+          const input = getByRole('textbox');
+
+          fireEvent.change(input, { target: { value: 'fo' } });
+
+          rerender(<LocationFinder onChange={handleChange} results={results} />);
+
+          expect(getByRole('listbox').children.length).toBe(6);
+
+          fireEvent.change(input, { target: { value: 'f' } });
+
+          rerender(<LocationFinder onChange={handleChange} results={results} />);
+
+          expect(queryByRole('listbox')).toBeNull();
+        });
+      });
+    });
+  });
+});
