@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:700|Open+Sans:400,700');
+@import-normalize;
+
+div, input {
+  box-sizing: border-box;
+}
 
 body {
   font-family: open sans,Helvetica,Arial,sans-serif;
