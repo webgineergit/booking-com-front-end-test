@@ -134,7 +134,7 @@ const LocationFinder = ({
 LocationFinder.propTypes = {
   results: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
       tag: PropTypes.string.isRequired,
       primaryText: PropTypes.string.isRequired,
       secondaryText: PropTypes.string.isRequired,

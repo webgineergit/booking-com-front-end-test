@@ -3,13 +3,13 @@ import { render, fireEvent } from '@testing-library/react';
 import LocationFinder from './';
 
 const moreThan6Results = [
-  { id: 'abc', tag: '', primaryText: 'Foo', secondaryText: '', },
-  { id: 'def', tag: '', primaryText: 'Bar', secondaryText: '', },
-  { id: 'ghi', tag: '', primaryText: 'Foo Bar', secondaryText: '', },
-  { id: 'jkl', tag: '', primaryText: 'Bar Foo', secondaryText: '', },
-  { id: 'mno', tag: '', primaryText: 'Foo Bar Foo', secondaryText: '', },
-  { id: 'pqr', tag: '', primaryText: 'Bar Foo Bar', secondaryText: '', },
-  { id: 'stu', tag: '', primaryText: 'Bar Bar Foo', secondaryText: '', },
+  { id: 1, tag: '', primaryText: 'Foo', secondaryText: '', },
+  { id: 2, tag: '', primaryText: 'Bar', secondaryText: '', },
+  { id: 3, tag: '', primaryText: 'Foo Bar', secondaryText: '', },
+  { id: 4, tag: '', primaryText: 'Bar Foo', secondaryText: '', },
+  { id: 5, tag: '', primaryText: 'Foo Bar Foo', secondaryText: '', },
+  { id: 6, tag: '', primaryText: 'Bar Foo Bar', secondaryText: '', },
+  { id: 7, tag: '', primaryText: 'Bar Bar Foo', secondaryText: '', },
 ];
 
 describe('LocationFinder', () => {
