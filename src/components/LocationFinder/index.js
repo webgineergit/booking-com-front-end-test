@@ -43,9 +43,13 @@ const LocationFinder = ({
           className={styles.input}
           value={value}
           onChange={handleChange}
+          autoComplete="off"
           id="location-finder-input"
           type="text"
           placeholder="city, airport, station, region and district.."
+          role="combobox"
+          aria-expanded={!shouldShowResults && !shouldShowNoResultsFound}
+          aria-controls="location-finder-list"
         />
         {
           loading && (
@@ -60,6 +64,7 @@ const LocationFinder = ({
           <ul
             className={styles.list}
             role="listbox"
+            id="location-finder-list"
           >
             {
               results.slice(0, resultLimit)
@@ -68,25 +73,34 @@ const LocationFinder = ({
                     className={styles.item}
                     key={id}
                   >
-                    <span
-                      className={styles.tag}
-                    >
-                      {tag}
-                    </span>
-                    <div
-                      className={styles.location}
+                    <button
+                      className={styles.action}
+                      aria-label={primaryText}
                     >
                       <span
-                        className={styles.primaryText}
+                        className={styles.tag}
+                        aria-hidden
                       >
-                        {primaryText}
+                        {tag}
                       </span>
-                      <span
-                        className={styles.secondaryText}
+                      <div
+                        className={styles.location}
+                        aria-hidden
                       >
-                        {secondaryText}
-                      </span>
-                    </div>
+                        <span
+                          className={styles.primaryText}
+                          aria-hidden
+                        >
+                          {primaryText}
+                        </span>
+                        <span
+                          className={styles.secondaryText}
+                          aria-hidden
+                        >
+                          {secondaryText}
+                        </span>
+                      </div>
+                    </button>
                   </li>
                 )
               )
@@ -99,6 +113,7 @@ const LocationFinder = ({
           <ul
             className={cnames(styles.list, styles.noResultsFound)}
             role="listbox"
+            id="location-finder-list"
           >
             <li
               className={styles.item}

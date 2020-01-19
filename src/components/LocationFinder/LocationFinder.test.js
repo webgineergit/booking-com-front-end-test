@@ -25,6 +25,14 @@ describe('LocationFinder', () => {
 
       expect(getByLabelText('Pick-up Location')).toBeTruthy();
     });
+  });
+
+  describe('accessibility', () => {
+    it('describes itself as a textbox', () => {
+      const { getByRole } = render(<LocationFinder />);
+
+      expect(getByRole('combobox')).toBeTruthy();
+    });
 
     it('has the correct placeholder text', () => {
       const { getByPlaceholderText } = render(<LocationFinder />);
@@ -33,19 +41,11 @@ describe('LocationFinder', () => {
     });
   });
 
-  describe('accessibility', () => {
-    it('describes itself as a textbox', () => {
-      const { getByRole } = render(<LocationFinder />);
-
-      expect(getByRole('textbox')).toBeTruthy();
-    });
-  });
-
   describe('interactivity', () => {
     describe('touching the input', () => {
       it('focuses on the input', () => {
         const { getByRole } = render(<LocationFinder />);
-        const input = getByRole('textbox');
+        const input = getByRole('combobox');
 
         input.focus();
 
@@ -56,7 +56,7 @@ describe('LocationFinder', () => {
     describe('single alphanumeric character entered', () => {
       it('removes placeholder text', () => {
         const { getByRole } = render(<LocationFinder />);
-        const input = getByRole('textbox');
+        const input = getByRole('combobox');
 
         fireEvent.change(input, { target: { value: 'f' } });
 
@@ -75,7 +75,7 @@ describe('LocationFinder', () => {
         } = render(
           <LocationFinder onChange={handleChange} results={results} />
         );
-        const input = getByRole('textbox');
+        const input = getByRole('combobox');
 
         fireEvent.change(input, { target: { value: 'f' } });
 
@@ -86,7 +86,7 @@ describe('LocationFinder', () => {
     describe('multiple alphanumeric characters entered', () => {
       it('removes the placeholder text', () => {
         const { getByRole } = render(<LocationFinder />);
-        const input = getByRole('textbox');
+        const input = getByRole('combobox');
 
         fireEvent.change(input, { target: { value: 'fo' } });
 
@@ -106,7 +106,7 @@ describe('LocationFinder', () => {
           } = render(
             <LocationFinder onChange={handleChange} results={[]} />
           );
-          const input = getByRole('textbox');
+          const input = getByRole('combobox');
 
           fireEvent.change(input, { target: { value: 'fo' } });
 
@@ -126,7 +126,7 @@ describe('LocationFinder', () => {
             getByRole,
             rerender,
           } = render(<LocationFinder onChange={handleChange} results={[]} />);
-          const input = getByRole('textbox');
+          const input = getByRole('combobox');
 
           fireEvent.change(input, { target: { value: 'fo' } });
 
@@ -146,7 +146,7 @@ describe('LocationFinder', () => {
             queryByRole,
             rerender,
           } = render(<LocationFinder onChange={handleChange} results={[]} />);
-          const input = getByRole('textbox');
+          const input = getByRole('combobox');
 
           fireEvent.change(input, { target: { value: 'fo' } });
 
