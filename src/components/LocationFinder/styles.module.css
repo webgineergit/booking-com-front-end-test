@@ -78,6 +78,10 @@
   width: 100%;
 }
 
+.noResultsFound .action {
+  font-style: italic;
+}
+
 .tag {
   background-color: #f2817f;
   border-radius: 4px;

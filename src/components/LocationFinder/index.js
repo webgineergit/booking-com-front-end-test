@@ -118,7 +118,11 @@ const LocationFinder = ({
             <li
               className={styles.item}
             >
-              No Results found
+              <button
+                className={styles.action}
+              >
+                No Results found
+              </button>
             </li>
           </ul>
         )
