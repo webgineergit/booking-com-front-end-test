@@ -113,7 +113,7 @@ describe('LocationFinder', () => {
           rerender(<LocationFinder results={results} />);
 
           expect(getByRole('listbox').children.length).toBe(1);
-          expect(getByRole('listbox').children[0].innerHTML).toBe('No Results found');
+          expect(getByRole('listbox').children[0].innerHTML).toContain('No Results found');
         });
       });
 
