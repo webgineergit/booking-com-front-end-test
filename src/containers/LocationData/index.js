@@ -28,8 +28,17 @@ const buildLocation = (city, country) => {
   return location;
 };
 
-const apiUrlSeparator = (url) =>
-  url.includes('?') && !url.endsWith('?') ? '&' : '?';
+const apiUrlSeparator = (url) => {
+  let separator = '?';
+
+  if (url.endsWith('?')) {
+    separator = '';
+  } else if (url.includes('?')) {
+    separator = '&';
+  }
+
+  return separator;
+};
 
 const LocationData = ({
   children,
