@@ -28,7 +28,7 @@ describe('LocationFinder', () => {
   });
 
   describe('accessibility', () => {
-    it('describes itself as a textbox', () => {
+    it('describes itself as a combobox', () => {
       const { getByRole } = render(<LocationFinder />);
 
       expect(getByRole('combobox')).toBeTruthy();
