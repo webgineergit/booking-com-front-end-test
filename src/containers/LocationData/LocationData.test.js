@@ -48,6 +48,9 @@ describe('LocationData', () => {
           results: {
             docs: [
               {
+                name: 'No results found',
+              },
+              {
                 index: 1,
                 name: 'Fo',
                 placeType: 'C',

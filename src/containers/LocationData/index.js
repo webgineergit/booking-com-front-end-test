@@ -28,6 +28,9 @@ const buildLocation = (city, country) => {
   return location;
 };
 
+const apiUrlSeparator = (url) =>
+  url.includes('?') && !url.endsWith('?') ? '&' : '?';
+
 const LocationData = ({
   children,
   apiBaseUrl,
@@ -37,7 +40,7 @@ const LocationData = ({
   const handleChange = (term) => {
     if (term && term.length > 1) {
       setLoading(true);
-      fetch(`${apiBaseUrl}&solrTerm=${term}`)
+      fetch(`${apiBaseUrl}${apiUrlSeparator(apiBaseUrl)}solrTerm=${term}`)
         .then(response => response.json())
         .then((json) => {
           const rawResults = get(json, 'results.docs', []);
