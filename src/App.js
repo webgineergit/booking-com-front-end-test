@@ -9,17 +9,17 @@ function App() {
       <div
         className={styles.search}
       >
-        <LocationData>
+        <LocationData
+          apiBaseUrl="https://www.rentalcars.com/FTSAutocomplete.do?solrIndex=fts_en&solrRows=6"
+        >
           {
             ({
-              results,
               handleChange,
-              loading,
+              ...rest
             }) => (
               <LocationFinder
-                results={results}
                 onChange={handleChange}
-                loading={loading}
+                {...rest}
               />
             )
           }

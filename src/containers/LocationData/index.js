@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
 const buildFullPlaceType = (placeType) => {
@@ -27,25 +28,26 @@ const buildLocation = (city, country) => {
   return location;
 };
 
-export default ({
+const LocationData = ({
   children,
+  apiBaseUrl,
 }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const handleChange = (term) => {
     if (term && term.length > 1) {
       setLoading(true);
-      fetch(`https://www.rentalcars.com/FTSAutocomplete.do?solrIndex=fts_en&solrRows=6&solrTerm=${term}`)
+      fetch(`${apiBaseUrl}&solrTerm=${term}`)
         .then(response => response.json())
         .then((json) => {
-          let results = [];
           const rawResults = get(json, 'results.docs', []);
+          let results = [];
 
           if (rawResults.length) {
             results = rawResults
               .filter(result => result.name !== 'No results found')
-              .map(result => ({
-                id: result.index,
+              .map((result, index) => ({
+                id: result.index || index + 1,
                 tag: buildFullPlaceType(result.placeType),
                 primaryText: result.name,
                 secondaryText: buildLocation(result.city, result.country),
@@ -63,15 +65,16 @@ export default ({
     }
   };
 
-  return (
-    <>
-      {
-        children({
-          results,
-          handleChange,
-          loading,
-        })
-      }
-    </>
-  )
+  return children({
+    results,
+    handleChange,
+    loading,
+  });
 };
+
+LocationData.propTypes = {
+  apiBaseUrl: PropTypes.string.isRequired,
+  children: PropTypes.func.isRequired,
+};
+
+export default LocationData;
